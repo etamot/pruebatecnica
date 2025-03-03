@@ -59,4 +59,9 @@ export class HotelesService {
     console.log('actualizando hotel');
     return this.http.patch<Hotel>(`${ baseUrl }/hoteles/${Number(id)}`, hotelLike);
   }
+
+  crearHotel(hotelLike:Partial<Hotel>): Observable<Hotel>{
+    console.log('actualizando hotel');
+    return this.http.post<Hotel>(`${ baseUrl }/hoteles`, hotelLike);
+  }
 }

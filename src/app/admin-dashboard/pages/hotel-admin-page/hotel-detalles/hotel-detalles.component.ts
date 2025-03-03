@@ -11,9 +11,8 @@ import { FormUtils } from '@utils/formutils';
   imports: [HotelImagePipe, ReactiveFormsModule],
   templateUrl: './hotel-detalles.component.html',
 })
-export class HotelDetallesComponent implements OnInit{
-
-  hotel = input.required<Hotel| undefined>();
+export class HotelDetallesComponent implements OnInit {
+  hotel = input.required<Hotel | undefined>();
 
   hotelesService = inject(HotelesService);
   fb = inject(FormBuilder);
@@ -22,39 +21,44 @@ export class HotelDetallesComponent implements OnInit{
     nombre: ['', Validators.required],
     descripcion: [''],
     estrellas: [''],
-    id: ['',[Validators.required,Validators.pattern(FormUtils.slugPattern)]],
+    id: ['', [Validators.required, Validators.pattern(FormUtils.slugPattern)]],
     ubicacion: [0],
     habilitado: [true],
-  })
+  });
 
   ciudadesResource = rxResource({
-            request: () => ({}),
-            loader :({ request }) =>{
+    request: () => ({}),
+    loader: ({ request }) => {
+      return this.hotelesService.getCiudades();
+    },
+  });
 
-                return this.hotelesService.getCiudades();
-            },
+  ngOnInit(): void {
+    this.hotelForm.reset(this.hotel() as any);
+  }
+
+  onSubmit() {
+    const isValid = this.hotelForm.valid;
+    this.hotelForm.markAllAsTouched();
+    if (!isValid) return;
+
+    const formValue = this.hotelForm.value;
+    const hotelLike: Partial<Hotel> = {
+      ...(formValue as any),
+    };
+    if (this.hotel()?.id == 'new') {
+      hotelLike.id = undefined;
+      this.hotelesService
+        .crearHotel(hotelLike)
+        .subscribe((hotel) => {
+          console.log('hotel actualizado');
         });
-
-        ngOnInit(): void {
-            this.hotelForm.reset(this.hotel() as any)
-        }
-
-        onSubmit(){
-          const isValid = this.hotelForm.valid;
-          this.hotelForm.markAllAsTouched();
-          if( !isValid ) return;
-
-          const formValue = this.hotelForm.value;
-          const hotelLike: Partial<Hotel>={
-            ...(formValue as any)
-          }
-
-
-          this.hotelesService.actualizarHotel(this.hotel()?.id?? '',hotelLike).subscribe(
-
-              hotel => {
-                console.log("hotel actualizado");
-              }
-          );
-        }
+    } else {
+      this.hotelesService
+        .actualizarHotel(this.hotel()?.id ?? '', hotelLike)
+        .subscribe((hotel) => {
+          console.log('hotel actualizado');
+        });
+    }
+  }
 }
