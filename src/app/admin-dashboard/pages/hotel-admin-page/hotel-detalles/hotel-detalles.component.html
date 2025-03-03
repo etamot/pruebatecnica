@@ -1,0 +1,89 @@
+<h1 class="text-2xl font-bold">{{ hotel()?.nombre }}</h1>
+<div class="divider"></div>
+
+<form [formGroup]="hotelForm"
+      class="grid grid-cols-1 sm:grid-cols-1 "
+      (ngSubmit)="onSubmit()">
+  <!-- Datos generales -->
+  <div class="flex flex-col gap-2">
+    <h2 class="text-2xl font-bold h-12">Datos generales</h2>
+    <div class="grid grid-cols-1 sm:grid-cols-2">
+    <input
+    type="text"
+    placeholder="Nombre"
+    class="input input-bordered w-full"
+    formControlName="nombre"
+    [class.border-red-500]="hotelForm.get('nombre')?.errors ?? false"
+    />
+    @if(hotelForm.get('nombre')?.errors){
+    <span class="text-red-500 text-sm">Este campo es requerido</span>
+  }
+  </div>
+
+
+    <textarea
+      class="textarea textarea-bordered"
+      placeholder="Descripción"
+      rows="6"
+      formControlName="descripcion"
+    ></textarea>
+
+    <h2 class="text-lg font-bold">Datos de Hotel</h2>
+
+    <div class="grid grid-cols-1 sm:grid-cols-3">
+      <input
+        type="number"
+        placeholder="Estrellas"
+        class="input input-bordered w-full"
+        formControlName="estrellas"
+      />
+    </div>
+
+    <!-- tags -->
+    <input type="text" placeholder="Tags" class="input input-bordered w-full" />
+
+    <!-- Botones para el género -->
+    <div class="grid grid-cols-3 gap-2">
+      <button type="button" class="btn btn-sm btn-secondary"
+      [class.btn-secondary]="hotelForm.value.habilitado == true"
+      (click)="hotelForm.patchValue({ habilitado: true})"
+      >Habilitar</button>
+      <button type="button" class="btn btn-sm btn-primary"
+      [class.btn-primary]="hotelForm.value.habilitado == false"
+      (click)="hotelForm.patchValue({ habilitado: false})"
+      >Deshabilitar</button>
+    </div>
+
+    <select class="select select-bordered w-full"
+    formControlName="ubicacion"
+    >
+      @for(ciudades of ciudadesResource.value(); track $index){
+
+        <option value="{{ciudades.id}}">{{ciudades.nombre}}</option>
+        }
+
+    </select>
+
+    <figure>
+      <img
+        src="{{hotel()?.imagen | hotelImage}}"
+        alt="{{hotel()?.nombre}}" />
+    </figure>
+  </div>
+
+  <!-- Imágenes -->
+
+
+  <div class="flex flex-col gap-2">
+    <input type="file" class="file-input file-input-bordered w-full mt-4" />
+    <div class="flex justify-end h-12">
+      <button class="btn btn-secondary" type="submit">
+        <!-- <span class="loading loading-spinner loading-sm"></span> -->
+
+        Guardar
+      </button>
+    </div>
+
+
+  </div>
+</form>

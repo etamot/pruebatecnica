@@ -1,0 +1,15 @@
+<h1 class="text-3xl font-bold font-montserrat">Todos los hoteles en {{ ciudadesResource.value()?.at(0)?.nombre }}</h1>
+<h2 class="text-xl mb-5">Escoge tu hotel ideal</h2>
+
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 mt-2 gap-3">
+    
+    @for(hotel of hotelesResource.value(); track $index){
+    <hotel-card [hotel]="hotel"/>
+    }
+
+    <!-- empty -->
+    @empty {
+        <p>No hay hoteles disponibles</p>
+        
+    }
+</div>

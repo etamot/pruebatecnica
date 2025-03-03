@@ -1,0 +1,27 @@
+@if( hotelResource.isLoading() ){
+    <div class="flex justify-center items-center h-screen">
+
+        <span class="loading loading-ball loading-lg"></span>
+    </div>
+}
+
+@if( hotelResource.hasValue()){
+
+    <div>
+        <h1 class="text-2xl font-bold font-montserrat">
+            {{ hotelResource.value().nombre }}
+        </h1>
+        
+        <div class="flex justify-center items-center">
+            <img class="mask mask-hexagon-2 max-w-80 object-cover" 
+                 src="{{ hotelResource.value().imagen | hotelImage }}" />
+          </div>
+        <div class="divider"></div>
+        <p >
+            {{ hotelResource.value().descripcion}}
+
+        </p>
+    </div>
+}
+
+

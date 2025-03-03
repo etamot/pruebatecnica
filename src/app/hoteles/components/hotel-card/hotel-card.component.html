@@ -1,0 +1,24 @@
+<div class="card glass animate-fadeIn">
+  <figure>
+    <img
+      src="{{hotel().imagen | hotelImage}}"
+      alt="{{hotel().nombre}}" />
+  </figure>
+  <div class="card-body">
+    <h2 class="card-title font-extrabold text-lg hover:underline cursor-pointer link-accent"
+    [routerLink]="['/hoteles/', hotel().id]">{{hotel().nombre}}</h2>
+    <p> {{ ciudadesResource.value()?.at(0)?.nombre }} </p>
+    <p> {{hotel().estrellas}} Estrellas </p>
+    <p >
+      {{ hotel().descripcion | slice : 0: 100 }}
+
+  </p>
+    <div class="card-actions justify-end">
+      <a
+        class="link link-accent"
+      [routerLink]="['/hoteles/', hotel().id]">
+        Reservar
+      </a>
+    </div>
+  </div>
+</div>

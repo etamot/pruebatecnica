@@ -1,0 +1,14 @@
+<h1 class="text-2xl font-extrabold">Listado de hoteles</h1>
+<h3 class="text-lg">
+  Hoteles totales
+  <span class="text-accent">{{ hotelesResource.value()?.length}}</span>
+</h3>
+
+<button class="btn btn-primary" routerLink="/admin/hoteles/new" >
+  Nuevo Hotel
+</button>
+<div class="divider"></div>
+
+
+<hotel-table [hoteles]="hotelesResource.value() ?? []" />
+
